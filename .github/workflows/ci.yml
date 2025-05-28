@@ -1,4 +1,8 @@
 name: Python Application CI
+permissions:
+  actions: read
+  contents: read
+  security-events: write
 
 on: [push, pull_request]
 
