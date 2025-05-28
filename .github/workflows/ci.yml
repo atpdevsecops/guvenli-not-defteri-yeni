@@ -1,26 +1,38 @@
 name: Python Application CI
 
-on: [push, pull_request] # Bu workflow ne zaman tetiklensin? (Kod gönderince veya PR açınca)
+on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest # Hangi işletim sisteminde çalışsın? (Genelde Linux kullanılır)
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3 # 1. Kodu GitHub'dan alıp sanal makineye kopyala
+    - uses: actions/checkout@v3 # 1. Kodu al
 
-    - name: Set up Python 3.10 # 2. Python 3.10 sürümünü kur (GÜNCELLENDİ)
+    - name: Set up Python 3.10 # 2. Python'u kur
       uses: actions/setup-python@v3
       with:
-        python-version: '3.10' # <--- DEĞİŞİKLİK BURADA
+        python-version: '3.10'
 
-    - name: Install dependencies # 3. requirements.txt dosyasındaki bağımlılıkları kur
+    - name: Install dependencies # 3. Bağımlılıkları kur
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Lint with flake8 (Örnek Test Adımı) # 4. Basit bir kod stili/kalite kontrolü yap
+    # --- YENİ GÜVENLİK ADIMLARI ---
+    - name: Initialize CodeQL # 4. CodeQL'i başlat ve analiz için hazırla
+      uses: github/codeql-action/init@v3
+      with:
+        languages: python # Analiz edilecek dil: Python
+
+    - name: Autobuild # 5. CodeQL'in kodu analiz etmek için build etmesi (Python için basit projelerde otomatik çalışır)
+      uses: github/codeql-action/autobuild@v3
+
+    - name: Perform CodeQL Analysis # 6. CodeQL analizini gerçekleştir ve sonuçları yükle
+      uses: github/codeql-action/analyze@v3
+    # --- YENİ GÜVENLİK ADIMLARI BİTTİ ---
+
+    - name: Lint with flake8 (Örnek Test Adımı) # 7. Kod stilini kontrol et
       run: |
         pip install flake8
-        # Kod stilini kontrol et (Şimdilik hata bulsa bile workflow'u durdurmasın diye || true ekledik)
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
