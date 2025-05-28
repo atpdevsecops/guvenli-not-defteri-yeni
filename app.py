@@ -16,7 +16,7 @@ HTML_TEMPLATE = """
 </form>
 <h2>Eklenen Notlar:</h2>
 <ul>
-  {% for note in notes %}
+  {% for note in notes %}cd ~/Projects/guvenli-not-defteri
     <li>{{ note | safe }}</li> {# <--- DİKKAT: Burada potansiyel XSS var! #}
   {% endfor %}
 </ul>
