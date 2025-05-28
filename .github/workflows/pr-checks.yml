@@ -1,0 +1,47 @@
+name: PR Checks with CodeQL
+
+# Gerekli izinleri burada tanımlıyoruz
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+# Sadece 'main' dalını hedefleyen PR'larda çalış
+on:
+  pull_request_target:
+    types: [ opened, synchronize, reopened ]
+    branches: [ main ]
+
+jobs:
+  analyze:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          # PR'ın kaynak dalını checkout etmeliyiz
+          ref: ${{ github.event.pull_request.head.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
