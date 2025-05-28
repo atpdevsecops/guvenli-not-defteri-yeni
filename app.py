@@ -17,7 +17,7 @@ HTML_TEMPLATE = """
 <h2>Eklenen Notlar:</h2>
 <ul>
   {% for note in notes %}cd ~/Projects/guvenli-not-defteri
-    <li>{{ note | safe }}</li> {# <--- DİKKAT: Burada potansiyel XSS var! #}
+    <li>{{ note }}</li> {# <--- DİKKAT: Burada potansiyel XSS var! #}
   {% endfor %}
 </ul>
 """
@@ -34,4 +34,4 @@ def add_note():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True) # Debug modunu açık bırakıyoruz (Bu da bir güvenlik riskidir!)
+    app.run(debug=FALSE) # Debug modunu açık bırakıyoruz (Bu da bir güvenlik riskidir!)
