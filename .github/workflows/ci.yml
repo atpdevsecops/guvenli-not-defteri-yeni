@@ -6,8 +6,9 @@ permissions:
   security-events: write
 
 on:
-  pull_request:
-    branches: [ main ] # Sadece 'main' dalını hedefleyen PR'larda çalış
+  pull_request_target:
+    types: [ opened, synchronize, reopened ] # PR açıldığında, güncellendiğinde, yeniden açıldığında tetikle
+    branches: [ main ]
 
 jobs:
   build:
