@@ -1,23 +1,22 @@
 name: Python Application CI
+
 permissions:
   actions: read
   contents: read
   security-events: write
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ main ] # Sadece 'main' dalını hedefleyen PR'larda çalış
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Hangi işletim sisteminde çalışsın?
 
     steps:
     - uses: actions/checkout@v3 # 1. Kodu al
 
-    - name: Set up Python 3.10 # 2. Python'u kur
+    - name: Set up Python 3.10 # 2. Python 3.10'u kur
       uses: actions/setup-python@v3
       with:
         python-version: '3.10'
@@ -27,18 +26,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # --- YENİ GÜVENLİK ADIMLARI ---
-    - name: Initialize CodeQL # 4. CodeQL'i başlat ve analiz için hazırla
+    - name: Initialize CodeQL # 4. CodeQL'i başlat
       uses: github/codeql-action/init@v3
       with:
-        languages: python # Analiz edilecek dil: Python
+        languages: python
 
-    - name: Autobuild # 5. CodeQL'in kodu analiz etmek için build etmesi (Python için basit projelerde otomatik çalışır)
+    - name: Autobuild # 5. CodeQL için build et
       uses: github/codeql-action/autobuild@v3
 
-    - name: Perform CodeQL Analysis # 6. CodeQL analizini gerçekleştir ve sonuçları yükle
+    - name: Perform CodeQL Analysis # 6. CodeQL analizini yap
       uses: github/codeql-action/analyze@v3
-    # --- YENİ GÜVENLİK ADIMLARI BİTTİ ---
 
     - name: Lint with flake8 (Örnek Test Adımı) # 7. Kod stilini kontrol et
       run: |
