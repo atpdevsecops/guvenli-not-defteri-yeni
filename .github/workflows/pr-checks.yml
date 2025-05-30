@@ -56,7 +56,7 @@ jobs:
           echo "IMAGE_NAME_WITH_TAG=guvenli-not-defteri:$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasec/trivy-action@0.20.0 # Belirli bir versiyon kullanmak daha stabildir
+        uses: aquasec/trivy-action@master # Belirli bir versiyon kullanmak daha stabildir
         with:
           image-ref: ${{ env.IMAGE_NAME_WITH_TAG }}
           format: 'table' # Çıktıyı konsolda tablo olarak gösterir
