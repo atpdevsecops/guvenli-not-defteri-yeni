@@ -67,7 +67,11 @@ jobs:
 
       # İsteğe Bağlı Adım: Trivy SARIF sonuçlarını GitHub Güvenlik Sekmesine Yükleme
       # - name: Upload Trivy scan results to GitHub Security tab (PR)
-      #   if: success() || failure() # Her durumda çalışsın (eğer SARIF dosyası oluştuysa)
+      #   # Bu adımın sadece SARIF dosyası oluştuğunda çalışmasını sağlamak için
+      #   # trivy-action adımına bir id verip (örn: id: trivy_scan)
+      #   # if: steps.trivy_scan.outputs.sarif-path != '' 
+      #   # gibi bir koşul eklenebilir veya her zaman çalışsın denebilir (aşağıdaki gibi)
+      #   if: success() || failure() 
       #   uses: github/codeql-action/upload-sarif@v3
       #   with:
       #     sarif_file: 'trivy-results.sarif' # trivy-action'da output olarak trivy-results.sarif belirtilmişse
@@ -94,7 +98,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository_owner }}/guvenli-not-defteri 
-          # ghcr.io/KULLANICI_ADIN/IMAGE_ADIN formatında olmalı
+          # Proje adınız "güvenli-ajandam" ise burayı ghcr.io/${{ github.repository_owner }}/guvenli-ajandam olarak güncelleyebilirsiniz.
+          # Şimdilik "guvenli-not-defteri" olarak bırakıyorum, depo adınızla aynı.
           tags: |
             type=sha,prefix=,suffix=,format=short 
             type=raw,value=latest,enable={{is_default_branch}}
