@@ -1,8 +1,3 @@
-Harika bir soru! Eğer `guvenli-not-defteri` projesinin `README.md` dosyasını ben yazıyor olsaydım, projenin amacını, nasıl kullanılacağını ve özellikle DevSecOps pratiklerini nasıl sergilediğini net bir şekilde ortaya koyan, kullanıcı dostu bir doküman oluşturmaya çalışırdım.
-
-İşte benim yazacağım `README.md` örneği:
-
-```markdown
 # Güvenli Not Defteri Projesi
 
 **DevSecOps Pratikleri için Python Flask Tabanlı Not Defteri Uygulaması**
@@ -144,17 +139,3 @@ Katkılarınız projeyi daha da geliştirmemize yardımcı olacaktır! Lütfen b
 ## 📄 Lisans
 
 Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına bakınız.
-
----
-
-_Bu README dosyası, projenin GitHub'daki genel yapısı ve açıklaması temel alınarak örnek olarak oluşturulmuştur. Projenin gerçek içeriği ve özellikleri farklılık gösterebilir._
-```
-
-Bu README'yi yazarken şunlara odaklandım:
-* **Açıklık ve Anlaşılırlık:** Projeye yeni gelen birinin neyle karşılaştığını hemen anlaması.
-* **Kullanıcı Odaklılık:** Kurulum ve çalıştırma adımlarının net olması.
-* **DevSecOps Vurgusu:** Projenin ana amacı olan güvenlik pratiklerinin ön plana çıkarılması ve somut örneklerle desteklenmesi.
-* **Genişletilebilirlik:** Projenin gelecekte eklenebilecek özellikler veya entegrasyonlar için bir zemin oluşturması.
-* **Standart Bölümler:** İyi bir README dosyasında bulunması beklenen genel başlıklar.
-
-Umarım bu örnek, projenin potansiyelini ve nasıl belgelenebileceğini gösterme konusunda sana fikir verir!
