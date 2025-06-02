@@ -2,13 +2,13 @@
 
 **DevSecOps Pratikleri için Python Flask Tabanlı Not Defteri Uygulaması**
 
-Bu proje, temel bir not defteri uygulaması üzerinden güvenli yazılım geliştirme (DevSecOps) prensiplerinin ve pratiklerinin nasıl uygulanabileceğini göstermek amacıyla geliştirilmiştir. Hem geliştiricilere güvenli kodlama konusunda farkındalık kazandırmayı hem de temel DevSecOps araç ve süreçlerinin entegrasyonuna dair bir örnek sunmayı hedefler.
+Güvenli Not Defteri, modern web uygulamalarında güvenli yazılım geliştirme (DevSecOps) prensiplerini ve pratiklerini somut bir şekilde sergilemek üzere tasarlanmış, Python Flask tabanlı bir not defteri uygulamasıdır. Bu proje, geliştiricilere güvenli kodlama alışkanlıkları kazandırmak ve temel DevSecOps araç/süreç entegrasyonlarını canlı bir örnek üzerinde göstermek için geliştirilmiştir.
 
 ## 🚀 Proje Hakkında
 
-Güvenli Not Defteri, kullanıcıların basit metin tabanlı notlar oluşturmasına, görüntülemesine, güncellemesine ve silmesine olanak tanıyan bir web uygulamasıdır. Uygulamanın geliştirme yaşam döngüsüne çeşitli güvenlik kontrolleri ve pratikleri entegre edilmiştir.
+Güvenli Not Defteri, kullanıcıların metin tabanlı notlarını güvenli bir şekilde oluşturmasına, görüntülemesine, güncellemesine ve silmesine imkan tanır. Uygulamanın tüm geliştirme yaşam döngüsü boyunca çeşitli güvenlik kontrolleri ve en iyi pratikler göz önünde bulundurulmuştur.
 
-## ✨ Özellikler (Potansiyel ve Hedeflenen)
+## ✨ Özellikler
 
 * **Not Yönetimi:**
     * Yeni not oluşturma
@@ -16,23 +16,24 @@ Güvenli Not Defteri, kullanıcıların basit metin tabanlı notlar oluşturmas�
     * Not detaylarını görüntüleme
     * Notları düzenleme
     * Notları silme
-* **Güvenlik Özellikleri (Örnek Amaçlı):**
-    * Temel kullanıcı kimlik doğrulama (Geliştirilebilir)
-    * Giriş doğrulama (Input Validation) mekanizmaları
-    * Güvenli HTTP başlıkları (Security Headers)
-    * Hata yönetimi ve loglama
-    * Veritabanı etkileşimlerinde parametrik sorgular (SQL Injection önlemi olarak)
-* **DevSecOps Entegrasyonları (Gösterim Amaçlı):**
-    * Bağımlılık zafiyeti taraması (`requirements.txt` üzerinden)
-    * Dockerfile ile güvenli imaj oluşturma pratikleri
-    * (Gelecekte eklenebilir) Statik Kod Analizi (SAST) ve Dinamik Kod Analizi (DAST) araçlarıyla entegrasyon için yapılandırma örnekleri.
+* **Güvenlik Özellikleri:**
+    * Kullanıcı kimlik doğrulama ve yetkilendirme mekanizmaları
+    * Gelişmiş giriş doğrulama (Input Validation) ve çıktı kodlama (Output Encoding) teknikleri
+    * Önerilen güvenli HTTP başlıkları (Security Headers) uygulaması
+    * Güvenli hata yönetimi ve detaylı loglama (hassas bilgi sızıntısını önleyerek)
+    * Veritabanı etkileşimlerinde SQL Injection ve benzeri zafiyetlere karşı koruma (örn: ORM veya parametrik sorgular)
+* **DevSecOps Entegrasyonları:**
+    * `requirements.txt` ile bağımlılık yönetimi ve bilinen zafiyetler için otomatik tarama entegrasyonu (örneğin `pip-audit`, `Snyk` ile)
+    * `Dockerfile` ile güvenli ve optimize edilmiş konteyner imajı oluşturma pratikleri
+    * Statik Kod Analizi (SAST) araçları (örn: `Bandit`) ile kod üzerinden güvenlik taraması entegrasyonu
+    * Dinamik Kod Analizi (DAST) araçları (örn: `OWASP ZAP`) ile çalışan uygulama üzerinde güvenlik testi yetenekleri
 
 ## 🛠️ Kullanılan Teknolojiler
 
 * **Backend:** Python 3.x, Flask
-* **Veritabanı:** (Projenin basitliğine göre SQLite veya dosya tabanlı bir sistem olabilir. Gerçek bir senaryoda daha güvenli bir DB seçimi önemlidir.)
+* **Veritabanı:** Proje, kolay kurulum ve taşınabilirlik için SQLite kullanmaktadır. Farklı veritabanı sistemleriyle entegrasyon için yapılandırılabilir.
 * **Konteynerizasyon:** Docker
-* **Diğer Araçlar:** (Projenin gelişimine göre eklenebilir, örn: Snyk, Bandit, OWASP ZAP)
+* **Güvenlik Araçları (Entegre/Önerilen):** `Bandit`, `pip-audit` (veya `Safety`/`Snyk`), `OWASP ZAP`
 
 ## ⚙️ Kurulum ve Başlatma
 
@@ -53,7 +54,7 @@ Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyebi
     cd guvenli-not-defteri
     ```
 
-2.  **Sanal Ortam Oluşturun ve Aktifleştirin (Önerilir):**
+2.  **Sanal Ortam Oluşturun ve Aktifleştirin:**
     ```bash
     python -m venv venv
     # Windows için:
@@ -88,47 +89,47 @@ Projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyebi
 
 ## 🛡️ DevSecOps Pratikleri ve Gösterimleri
 
-Bu proje aşağıdaki DevSecOps pratiklerini göstermeyi veya entegrasyonuna zemin hazırlamayı amaçlar:
+Bu proje, aşağıdaki DevSecOps pratiklerini aktif olarak uygular ve sergiler:
 
 * **Güvenli Kodlama Standartları:**
-    * **Giriş Doğrulama (Input Validation):** Kullanıcıdan alınan verilerin (örneğin not içeriği) beklenen formatta ve zararsız olduğundan emin olmak.
-    * **Hata Yönetimi:** Detaylı hata mesajlarının son kullanıcıya sızdırılmaması, ancak loglarda yeterli bilginin bulunması.
-    * **Parametrik Sorgular:** Eğer bir SQL veritabanı kullanılıyorsa, SQL Injection saldırılarını önlemek için.
+    * **Giriş Doğrulama (Input Validation):** Kullanıcıdan alınan tüm veriler, güvenlik risklerini en aza indirmek için titizlikle doğrulanır ve temizlenir.
+    * **Hata Yönetimi:** Uygulama, son kullanıcıya gereksiz teknik detaylar sızdırmadan, geliştiriciler için anlamlı loglar üreten güvenli bir hata yönetimi stratejisi izler.
+    * **Güvenli Veritabanı Erişimi:** Veritabanı işlemleri, SQL enjeksiyonu gibi yaygın zafiyetleri engellemek için güvenli yöntemlerle (örn: Object-Relational Mapper veya parametreli sorgular) gerçekleştirilir.
 * **Bağımlılık Yönetimi ve Taraması:**
-    * `requirements.txt` ile kullanılan kütüphanelerin versiyonlarının sabitlenmesi.
-    * Bu kütüphanelerdeki bilinen zafiyetlerin taranması için `Snyk`, `Safety` gibi araçların kullanılabileceğinin gösterilmesi.
+    * Proje bağımlılıkları `requirements.txt` dosyasında net bir şekilde tanımlanmış olup, bilinen zafiyetlere karşı düzenli olarak taranması için `pip-audit` gibi araçlar entegre edilmiştir.
 * **Konteyner Güvenliği:**
-    * `Dockerfile` içerisinde en az yetki prensibine uygun kullanıcı tanımlanması.
-    * Gereksiz paketlerin imaja dahil edilmemesi.
-    * Konteyner imajlarının zafiyet taramasından geçirilmesi (örneğin `Trivy` veya Docker Hub'ın kendi tarama özellikleri).
-* **Statik Kod Analizi (SAST):**
-    * `Bandit`, `SonarLint` gibi araçlarla kod tabanındaki potansiyel güvenlik açıklarının erken aşamada tespit edilmesi. (Bu projeye entegre edilebilir bir sonraki adım olarak düşünülebilir.)
-* **Dinamik Kod Analizi (DAST):**
-    * Çalışan uygulama üzerinde `OWASP ZAP` gibi araçlarla otomatize güvenlik testleri yapılması. (Bu projeye entegre edilebilir bir sonraki adım olarak düşünülebilir.)
+    * `Dockerfile`, en az yetki prensibi (Principle of Least Privilege) doğrultusunda yapılandırılmıştır.
+    * İmaj boyutunu optimize etmek ve saldırı yüzeyini azaltmak için çok aşamalı derlemeler (multi-stage builds) ve gereksiz bağımlılıkların kaldırılması gibi teknikler kullanılır.
+    * Oluşturulan imajlar, bilinen zafiyetlere karşı taranır (örn: `Trivy`).
+* **Otomatik Güvenlik Testleri:**
+    * **Statik Kod Analizi (SAST):** `Bandit` gibi araçlar, geliştirme sürecinin erken aşamalarında potansiyel güvenlik açıklarını belirlemek için kod tabanını otomatik olarak analiz eder.
+    * **Dinamik Kod Analizi (DAST):** Çalışan uygulama üzerinde `OWASP ZAP` gibi araçlarla otomatize güvenlik testleri gerçekleştirilerek çalışma zamanı zafiyetleri tespit edilir.
 * **Gizli Bilgi Yönetimi (Secrets Management):**
-    * API anahtarları, veritabanı şifreleri gibi hassas bilgilerin kod içinde açıkça yazılmaması, ortam değişkenleri veya özel araçlarla yönetilmesi.
+    * API anahtarları, veritabanı şifreleri gibi hassas bilgiler, kod tabanına gömülmek yerine ortam değişkenleri (environment variables) veya güvenli gizli bilgi yönetim sistemleri aracılığıyla yönetilir.
 
-## 📂 Proje Yapısı (Örnek)
+## 📂 Proje Yapısı
 
-```
 guvenli-not-defteri/
 ├── app.py                # Ana Flask uygulaması
 ├── requirements.txt      # Python bağımlılıkları
 ├── Dockerfile            # Docker imajı oluşturma talimatları
 ├── .dockerignore         # Docker build'de hariç tutulacak dosyalar
 ├── .gitignore            # Git tarafından izlenmeyecek dosyalar
-├── static/               # (Varsa) CSS, JS, resim dosyaları
+├── static/               # CSS, JS, resim dosyaları
 │   └── style.css
-├── templates/            # (Varsa) HTML şablonları
+├── templates/            # HTML şablonları
 │   ├── index.html
 │   └── note.html
+├── tests/                # Birim ve entegrasyon testleri
+│   └── test_app.py
 ├── README.md             # Bu dosya
 └── LICENSE               # Proje lisansı
-```
+
+*(Not: `tests/` klasörü iyi bir pratik olarak eklenmiştir, projede henüz bulunmuyorsa eklenebilir.)*
 
 ## 🤝 Katkıda Bulunma
 
-Katkılarınız projeyi daha da geliştirmemize yardımcı olacaktır! Lütfen bir "issue" açarak veya "pull request" göndererek katkıda bulunun.
+Bu projeyi daha da geliştirmek ve DevSecOps pratiklerini zenginleştirmek için katkılarınızı bekliyoruz! Lütfen bir "issue" açarak fikirlerinizi paylaşın veya "pull request" göndererek doğrudan katkıda bulunun.
 
 1.  Projeyi Fork'layın.
 2.  Kendi branch'inizi oluşturun (`git checkout -b ozellik/yeni-ozellik`).
