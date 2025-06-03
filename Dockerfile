@@ -1,44 +1,58 @@
+# Dockerfile
 # 1. Temel imaj olarak Python 3.10'un slim (hafif) versiyonunu kullan
 FROM python:3.10-slim
 
-# 2. İşletim sistemi paketlerini güncelle ve gereksiz dosyaları temizle
+# Ortam değişkenlerini ayarla (pip'in gereksiz loglarını engelle, Python'u optimize et)
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# 2. İşletim sistemi paketlerini güncelle, gunicorn ve diğer olası bağımlılıklar için gerekli build araçlarını kur
+# ve gereksiz dosyaları temizle
 RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc libffi-dev musl-dev && \
+    # gcc libffi-dev musl-dev bazı python paketlerinin (örn: cryptography) derlenmesi için gerekebilir
     apt-get upgrade -y && \
     rm -rf /var/lib/apt/lists/*
 
 # 3. pip, setuptools ve wheel'i güncelle
 RUN python -m pip install --upgrade pip setuptools wheel
 
-# YENİ: Güvenlik için root olmayan bir kullanıcı (appuser) ve grup (appgroup) oluştur.
-# -r: Sistem kullanıcısı/grubu oluşturur (genellikle home dizini oluşturulmaz).
-# --no-log-init: Debian tabanlı sistemlerde login.defs ile ilgili olası uyarıları/hataları engeller.
+# 4. Güvenlik için root olmayan bir kullanıcı (appuser) ve grup (appgroup) oluştur.
 RUN groupadd -r appgroup && useradd --no-log-init -r -g appgroup appuser
 
-# 4. Çalışma dizinini /app olarak ayarlaC:\Users\atpek\Desktop\Projects\guvenli-not-defteri
+# 5. Çalışma dizinini /app olarak ayarla
 WORKDIR /app
 
-# 5. requirements.txt dosyasını çalışma dizinine kopyala
-# Bu ve sonraki COPY komutu root kullanıcısı bağlamında çalışır.
+# 6. requirements.txt dosyasını çalışma dizinine kopyala
+# Bu katmanın önbelleğe alınması için uygulama kodundan önce kopyalanır.
 COPY requirements.txt ./
 
-# 6. requirements.txt dosyasındaki Python bağımlılıklarını yükle
+# 7. requirements.txt dosyasındaki Python bağımlılıklarını yükle
+# --no-cache-dir imaj boyutunu küçültür.
+# Sanal ortam kullanmıyoruz çünkü konteyner zaten izole bir ortam.
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 7. Proje dosyalarının geri kalanını (örn: app.py) çalışma dizinine kopyala
+# 8. Proje dosyalarının geri kalanını (örn: app.py, templates klasörü) çalışma dizinine kopyala
 COPY . .
 
-# YENİ: /app dizininin ve içindeki tüm dosyaların sahipliğini oluşturduğumuz appuser:appgroup ikilisine ver.
-# Bu adım, dosyalar kopyalandıktan SONRA yapılmalı ki doğru sahiplik atansın.
+# 9. /app dizininin ve içindeki tüm dosyaların sahipliğini oluşturduğumuz appuser:appgroup ikilisine ver.
 RUN chown -R appuser:appgroup /app
 
-# YENİ: Root olmayan 'appuser' kullanıcısına geçiş yap.
-# Bu satırdan sonraki tüm komutlar (örn: CMD) appuser bağlamında çalışacaktır.
+# 10. Root olmayan 'appuser' kullanıcısına geçiş yap.
 USER appuser
 
-# 8. Flask uygulamasının çalışacağı portu belirt (varsayılan Flask portu 5000)
-# Bu satır USER komutundan önce veya sonra olabilir, işlevsel olarak büyük bir fark yaratmaz.
+# 11. Flask uygulamasının çalışacağı portu belirt
 EXPOSE 5000
 
-# 9. Konteyner başladığında uygulamayı çalıştıracak komut
-# Bu komut artık 'appuser' olarak çalıştırılacak.
-CMD ["python", "app.py"]
+# 12. Konteynerin sağlıklı olup olmadığını kontrol etmek için HEALTHCHECK (isteğe bağlı ama önerilir)
+# Bu örnek, uygulamanın ana sayfasının 5 saniye içinde yanıt verip vermediğini kontrol eder.
+# Gerçek uygulamanızda özel bir /health endpoint'i oluşturmak daha iyidir.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:5000/ || exit 1
+  # Eğer uygulamanızda /health endpoint'i varsa: CMD curl -f http://localhost:5000/health || exit 1
+
+# 13. Konteyner başladığında uygulamayı Gunicorn ile çalıştıracak komut
+# Bu komut 'appuser' olarak çalıştırılacak.
+# app:app -> app.py dosyasındaki 'app' adlı Flask nesnesi.
+# requirements.txt dosyanızda 'gunicorn' olduğundan emin olun.
+CMD ["gunicorn", "--workers", "2", "--threads", "2", "--worker-class", "gthread", "--bind", "0.0.0.0:5000", "app:app"]
